@@ -1,5 +1,31 @@
+
+
+# 1. Минимальный вариант VFS
+
+cd folder2
 ls
+
+
+# 2. Вариант с несколькими файлами
+
 cd folder1
 ls
-cd ..
-unknown_command
+cd afolder1
+ls
+
+
+# 3. Вложенный вариант
+
+cd folder 3
+cd folder31
+cd folder32
+ls
+
+
+
+# Ошибки и проверка команд
+
+cd netTakou
+kakaobobi
+cd
+

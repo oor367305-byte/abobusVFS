@@ -20,7 +20,7 @@ def process_command(command):
     if not app_running:
         return
     command = os.path.expandvars(command)
-    parts = command.split()
+    parts = command.strip().split()
     if not parts:
         return
     cmd = parts[0]
@@ -29,13 +29,15 @@ def process_command(command):
         output_text.insert(tk.END, f"> {command}\n")
         if cmd == "ls":
             files = vfs.get(current_dir, {"dirs": [], "files": []})
-            output_text.insert(tk.END, f"Dirs: {files['dirs']}, Files: {files['files']}\n")
+            output_text.insert(tk.END, f"Dirs: {files['dirs']}\nFiles: {files['files']}\n")
         elif cmd == "cd":
-            if not args:
-                output_text.insert(tk.END, "Error: cd requires an argument\n")
+            if not args or args[0] in [".", "/"]:
+                current_dir = "."
             else:
-                target = args[0]
+                target = " ".join(args)
                 new_dir = os.path.normpath(os.path.join(current_dir, target))
+                if new_dir == "":
+                    new_dir = "."
                 if new_dir in vfs:
                     current_dir = new_dir
                 else:
@@ -51,7 +53,7 @@ def process_command(command):
         output_text.insert(tk.END, f"Error: {e}\n")
 
 root = tk.Tk()
-root.title("VFS Emulator - Configurable")
+root.title("VFS Emulator - Stage 3")
 root.geometry("600x400")
 
 output_text = tk.Text(root, height=20, width=80)
@@ -79,7 +81,7 @@ def run_script():
         return
     if os.path.exists(script_path):
         try:
-            with open(script_path, "r") as f:
+            with open(script_path, "r", encoding="utf-8") as f:
                 for line in f:
                     if not app_running:
                         break
@@ -91,7 +93,8 @@ def run_script():
             if app_running:
                 output_text.insert(tk.END, f"Error executing script: {e}\n")
     else:
-        output_text.insert(tk.END, f"Script '{script_path}' not found\n")
+        if script_path:
+            output_text.insert(tk.END, f"Script '{script_path}' not found\n")
 
 root.after(100, run_script)
 root.mainloop()
