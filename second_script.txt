@@ -1,0 +1,26 @@
+# --- Тест 1: базовые команды ls и cd ---
+ls
+cd folder1
+
+
+# --- Тест 2: echo ---
+echo Привет мир
+
+echo Тест с несколькими словами и числами 123 456
+
+# --- Тест 3: head ---
+cd folder1
+head file1.txt
+
+head nn.txt
+
+# --- Тест 4: ошибки cd и ls ---
+cd non_existing_folder
+ls
+cd folder2
+ls
+
+# --- Тест 5: возврат в корень ---
+cd .
+ls
+
